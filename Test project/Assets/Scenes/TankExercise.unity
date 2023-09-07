@@ -509,6 +509,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1685416592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1685416593}
+  m_Layer: 0
+  m_Name: Weapon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1685416593
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685416592}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2060447110}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2054233668
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,13 +598,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2060447109}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.2264853, y: 1.8046216, z: -0.054941908}
+  m_LocalPosition: {x: 3.2264853, y: 1.97, z: -0.054941908}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2080866503}
   - {fileID: 2136434507}
   - {fileID: 2054233669}
+  - {fileID: 1685416593}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -589,6 +621,113 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea55851a05c15f84281625ceef2c4149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftThreadAction:
+    m_Name: Left Thread
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 52ce1f3f-96b2-42ef-b598-edf13cfb0803
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: a554f61a-9306-41be-9fb1-f284948621e6
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Left Thread
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 64372967-3323-4763-bae1-c6b589cc2473
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Left Thread
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 8c3d0be0-aabc-4d0b-99f9-d1290ff8003c
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Left Thread
+      m_Flags: 8
+    - m_Name: left
+      m_Id: ffefbcdb-2b29-4756-b6f7-3e3c4b36b4aa
+      m_Path: 
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Left Thread
+      m_Flags: 8
+    - m_Name: right
+      m_Id: 29c1c758-9423-464f-8444-b1f23be22c95
+      m_Path: 
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Left Thread
+      m_Flags: 8
+    m_Flags: 0
+  rightThreadAction:
+    m_Name: Right Thread
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 5d9d2296-c2da-40f4-ac5d-ae48ffa76557
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 65da7ad8-0572-4381-a658-ab0a21faecae
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Right Thread
+      m_Flags: 4
+    - m_Name: up
+      m_Id: d0023b61-118c-4c04-a78e-55108d40803d
+      m_Path: <Keyboard>/i
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Right Thread
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 79209613-0fe2-4fd0-b883-5e308abf4a3c
+      m_Path: <Keyboard>/k
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Right Thread
+      m_Flags: 8
+    - m_Name: left
+      m_Id: 2a906337-da1d-44b8-8ec1-4224a485bdf1
+      m_Path: 
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Right Thread
+      m_Flags: 8
+    - m_Name: right
+      m_Id: 0e145c5b-6d5b-4ab7-8ad7-0c9518c699a3
+      m_Path: 
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Right Thread
+      m_Flags: 8
+    m_Flags: 0
+  rotateAction:
+    m_Name: Rotate
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 8205cee5-64e9-4413-8d7b-89b36b5a54ff
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &2080866500
 GameObject:
   m_ObjectHideFlags: 0
