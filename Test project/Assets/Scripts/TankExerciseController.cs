@@ -39,35 +39,35 @@ public class TankExerciseController : MonoBehaviour
         //If the right tread is moving forward and the left is moving backward the tank should rotate to the left at full speed.
         if(moveValueRight.y == 1.0f && moveValueLeft.y == -1.0f)
         {
-            transform.Rotate(Vector3.down, moveValueRight.y * rotationSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.down, rotationSpeed * Time.deltaTime);
         }
 
         //If the right tread is moving backward and the left is moving forward the tank should rotate to the right at full speed.
         if (moveValueRight.y == -1.0f && moveValueLeft.y == 1.0f)
         {
-            transform.Rotate(Vector3.down, moveValueRight.y * rotationSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.down, rotationSpeed * Time.deltaTime);
         }
 
         //If the right tread is moving forward and the left is not moving the tank should rotate to the left at half speed.
         if (moveValueRight.y == 1.0f && moveValueLeft.y == 0.0f)
         {
-            transform.Rotate(Vector3.up, (rotationSpeed / 2) * Time.deltaTime, Space.World);
+            transform.Rotate(Vector3.down, (rotationSpeed / 2) * Time.deltaTime);
         }
 
         //If the left tread is moving forward and the right is not moving the tank should rotate to the right at half speed.
         if (moveValueRight.y == 0.0f && moveValueLeft.y == 1.0f)
         {
-            transform.Rotate(Vector3.up, (rotationSpeed / 2) * Time.deltaTime);
+            transform.Rotate(Vector3.up, (rotationSpeed / 2) * Time.deltaTime, Space.World);
         }
 
         //Reverse the rotation of the last two if the movement of the tread is backward.
         if (moveValueRight.y == -1.0f && moveValueLeft.y == 0.0f)
         {
-            transform.Rotate(Vector3.up, (rotationSpeed / 2) * Time.deltaTime, Space.World);
+            transform.Rotate(Vector3.up, (rotationSpeed / 2) * Time.deltaTime);
         }
         if (moveValueRight.y == 0.0f && moveValueLeft.y == -1.0f)
         {
-            transform.Rotate(Vector3.down, (rotationSpeed / 2) * Time.deltaTime, Space.World);
+            transform.Rotate(Vector3.down, (rotationSpeed / 2) * Time.deltaTime);
         }
 
         //Barrel Rotate Up – O
