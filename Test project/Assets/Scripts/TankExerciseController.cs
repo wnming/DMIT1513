@@ -34,7 +34,7 @@ public class TankExerciseController : MonoBehaviour
         turretValue = turretAction.ReadValue<Vector2>();
         barrelValue = barrelAction.ReadValue<Vector2>();
 
-        //Turret Rotate Left – D
+         //Turret Rotate Left – D
         //Turret Rotate Right – J
         turret.transform.Rotate(Vector3.up, turretValue.x * rotationSpeed * Time.deltaTime);
 
@@ -60,7 +60,7 @@ public class TankExerciseController : MonoBehaviour
         //If the left tread is moving forward and the right is not moving the tank should rotate to the right at half speed.
         if (moveValueRight.y == 0.0f && moveValueLeft.y == 1.0f)
         {
-            transform.Rotate(Vector3.up, (rotationSpeed / 2) * Time.deltaTime, Space.World);
+            transform.Rotate(Vector3.up, (rotationSpeed / 2) * Time.deltaTime);
         }
 
         //Reverse the rotation of the last two if the movement of the tread is backward.
