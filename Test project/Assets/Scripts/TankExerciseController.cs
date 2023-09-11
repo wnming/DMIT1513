@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,6 +34,8 @@ public class TankExerciseController : MonoBehaviour
         turretValue = turretAction.ReadValue<Vector2>();
         barrelValue = barrelAction.ReadValue<Vector2>();
 
+        //Turret Rotate Left – D
+        //Turret Rotate Right – J
         turret.transform.Rotate(Vector3.up, turretValue.x * rotationSpeed * Time.deltaTime);
 
         //Rotation
@@ -75,8 +78,27 @@ public class TankExerciseController : MonoBehaviour
         barrel.transform.Rotate(Vector3.forward, barrelValue.y * rotationSpeed * Time.deltaTime);
 
         //move the object
-        transform.Translate(new Vector3(moveValueLeft.x, 0, moveValueLeft.y) * movementSpeed * Time.deltaTime, Space.Self);
-        transform.Translate(new Vector3(moveValueRight.x, 0, moveValueRight.y) * movementSpeed * Time.deltaTime, Space.Self);
+        //When both treads are moving forward the tank should move forward at full speed.
+        if(moveValueRight.y == 1.0f && moveValueLeft.y == 1.0f)
+        {
+            transform.Translate(new Vector3(moveValueLeft.x, 0, moveValueLeft.y) * movementSpeed * Time.deltaTime, Space.Self);
+        }
+        else
+        {
+            //If one tread is moving forward the tank should move forward at half speed.
+            transform.Translate(new Vector3(moveValueLeft.x, 0, moveValueLeft.y) * (movementSpeed / 2) * Time.deltaTime, Space.Self);
+        }
+        
+        //When both treads are moving backward the tank should move backward at full speed.
+        if(moveValueRight.y == -1.0f && moveValueLeft.y == -1.0f)
+        {
+            transform.Translate(new Vector3(moveValueRight.x, 0, moveValueRight.y) * movementSpeed * Time.deltaTime, Space.Self);
+        }
+        else
+        {
+            //If one tread is moving backward the tank should move backward at half speed.
+            transform.Translate(new Vector3(moveValueRight.x, 0, moveValueRight.y) * (movementSpeed / 2) * Time.deltaTime, Space.Self);
+        }
     }
 
     private void FixedUpdate()
