@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
 
 public class MovementController : MonoBehaviour
 {
@@ -14,7 +15,9 @@ public class MovementController : MonoBehaviour
     //movement variables
     float movementSpeed, rotationSpeed;
 
-    [SerializeField] GameObject weapon;
+    [SerializeField] GameObject weapon, camera, targetObj;
+
+    RaycastHit hit;
 
     Vector3 angles;
 
@@ -31,6 +34,16 @@ public class MovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Moveplayer();
+        if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit))
+        {
+            targetObj.transform.position = hit.point;
+        }
+
+    }
+
+    void Moveplayer()
+    {
         //get player input
         moveValue = moveAction.ReadValue<Vector2>();
         rotateValue = rotateAction.ReadValue<Vector2>();
@@ -44,17 +57,17 @@ public class MovementController : MonoBehaviour
         angles = weapon.transform.eulerAngles;
 
         //Check the angles to see if they need to be clamped
-        if(angles.x > 45.0f && angles.x < 180.0f)
+        if (angles.x > 45.0f && angles.x < 180.0f)
         {
             weapon.transform.localRotation = Quaternion.Euler(45.0f, 0, 0);
         }
-        if(angles.x < 315.0f && angles.x > 180.0f)
+        if (angles.x < 315.0f && angles.x > 180.0f)
         {
             weapon.transform.localRotation = Quaternion.Euler(315.0f, 0, 0);
         }
 
         var keyboard = Keyboard.current;
-        if(keyboard != null && isGrounded)
+        if (keyboard != null && isGrounded)
         {
             if (keyboard.spaceKey.wasPressedThisFrame)
             {

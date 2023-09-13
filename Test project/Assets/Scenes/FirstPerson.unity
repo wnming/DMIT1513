@@ -261,7 +261,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 723764348}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.85, y: 0.73, z: 1.55}
+  m_LocalPosition: {x: 1.85, y: 0.73, z: -2.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1369,6 +1369,8 @@ MonoBehaviour:
       m_Flags: 8
     m_Flags: 0
   weapon: {fileID: 925566928}
+  camera: {fileID: 796044400}
+  targetObj: {fileID: 2116295075}
 --- !u!4 &1701250420
 Transform:
   m_ObjectHideFlags: 0
@@ -1652,7 +1654,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2116295075}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.19, y: 1.77, z: -2.25}
+  m_LocalPosition: {x: 15.19, y: 1.77, z: -7.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
