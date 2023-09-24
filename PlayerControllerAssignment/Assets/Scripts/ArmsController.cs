@@ -2,50 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
-public class BaseLoader : MonoBehaviour
+public class ArmsController : MonoBehaviour
 {
     //input variables
-    public InputAction moveAction, rotateAction;
+    public InputAction rotateAction;
 
-    Vector2 moveValue, rotateValue;
+    Vector2 rotateValue;
+    Vector3 angles;
 
     //movement variables
-    float movementSpeed, rotationSpeed;
+    float rotationSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
         //initial movement variables
-        movementSpeed = 3.0f;
         rotationSpeed = 80.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        moveValue = moveAction.ReadValue<Vector2>();
         rotateValue = rotateAction.ReadValue<Vector2>();
-
     }
 
     private void FixedUpdate()
     {
-        //move the object
-        transform.Translate(new Vector3(moveValue.x, 0, moveValue.y) * movementSpeed * Time.fixedDeltaTime);
+        transform.Rotate(Vector3.forward, rotateValue.y * rotationSpeed * Time.fixedDeltaTime);
 
-        transform.Rotate(Vector3.up, rotateValue.y * rotationSpeed * Time.fixedDeltaTime);
+        angles = transform.localRotation.eulerAngles;
+        if (angles.z > 60.0f && angles.z < 90.0f)
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, 60.0f);
+        }
+        if (angles.z > 270.0f && angles.z < 335.0f)
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, 335.0f);
+        }
     }
-
     private void OnEnable()
     {
-        moveAction.Enable();
         rotateAction.Enable();
     }
 
     private void OnDisable()
     {
-        moveAction.Disable();
         rotateAction.Disable();
     }
 }
