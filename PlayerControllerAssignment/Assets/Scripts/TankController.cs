@@ -4,7 +4,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
-using static UnityEditor.Progress;
 
 public class TankController : MonoBehaviour
 {
