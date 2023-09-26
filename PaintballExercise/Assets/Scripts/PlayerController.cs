@@ -24,7 +24,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         rotateValue = rotateAction.ReadValue<Vector2>();
-
+        //Rotate player and weapon
+        transform.Rotate(Vector3.up, rotateValue.x * rotationSpeed * Time.deltaTime);
         weapon.transform.Rotate(Vector3.right, rotateValue.y * rotationSpeed * Time.deltaTime);
 
         //Get the current weapon angles
