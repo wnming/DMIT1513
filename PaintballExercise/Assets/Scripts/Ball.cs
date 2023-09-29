@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    GameObject ball;
     private void OnCollisionEnter(Collision collision)
     {
         //change the color
-        collision.gameObject.GetComponent<Renderer>().material.color = ball.GetComponent<Renderer>().material.color;
-        Destroy(ball);
+        if(collision.transform.tag == "Paintable")
+        {
+            collision.gameObject.GetComponent<Renderer>().material.color = gameObject.GetComponent<Renderer>().material.color;
+            gameObject.SetActive(false);
+        }
     }
 }
