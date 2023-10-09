@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 28424803}
   - component: {fileID: 28424805}
   - component: {fileID: 28424804}
+  - component: {fileID: 28424806}
   m_Layer: 0
   m_Name: ThirdPersonCamera
   m_TagString: Untagged
@@ -207,6 +208,19 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &28424806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28424802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e8d357477a9948850b8e3e0aabb08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thirdPersonCamera: {fileID: 28424805}
 --- !u!1 &63726140
 GameObject:
   m_ObjectHideFlags: 0
