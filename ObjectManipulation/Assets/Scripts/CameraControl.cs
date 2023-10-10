@@ -6,15 +6,17 @@ public class CameraControl : MonoBehaviour
 {
     [SerializeField] Camera firstPersonCamera;
     [SerializeField] Camera thirdPersonCamera;
+    [SerializeField] Camera interactPersonCamera;
 
     private void Start()
     {
         ShowThirdPersonView();
+        interactPersonCamera.enabled = false;
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.P))
+        if(Input.GetKeyDown(KeyCode.P) && !interactPersonCamera.enabled)
         {
             if (thirdPersonCamera.enabled)
             {

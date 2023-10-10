@@ -5,9 +5,9 @@ using UnityEngine;
 public class ThirdPersonCamera : MonoBehaviour
 {
     [SerializeField] Camera thirdPersonCamera;
-    float min = 30f;
-    float max = 75f;
-    float scrollSpeed = 8f;
+    float min = 30.0f;
+    float max = 75.0f;
+    float scrollSpeed = 8.0f;
 
     // Start is called before the first frame update
     void Start()
