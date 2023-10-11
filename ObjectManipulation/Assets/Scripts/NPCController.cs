@@ -9,10 +9,14 @@ public class NPCController : MonoBehaviour
     [SerializeField] TextMeshProUGUI npcText;
 
     [SerializeField] GameObject player;
+    [SerializeField] GameObject trasure;
+    [SerializeField] GameObject[] enemies;
 
     [SerializeField] Camera firstPersonCamera;
     [SerializeField] Camera thirdPersonCamera;
     [SerializeField] Camera interactPersonCamera;
+
+    public bool isPressT;
 
     float range = 3.3f;
 
@@ -22,6 +26,11 @@ public class NPCController : MonoBehaviour
         //instructionText = GetComponent<TextMeshProUGUI>();
         instructionText.gameObject.SetActive(false);
         npcText.gameObject.SetActive(false);
+        for(int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].SetActive(false);
+        }
+        isPressT = false;
     }
 
     // Update is called once per frame
@@ -45,7 +54,16 @@ public class NPCController : MonoBehaviour
                     interactPersonCamera.enabled = true;
                     thirdPersonCamera.enabled = false;
                     firstPersonCamera.enabled = false;
+                    for (int i = 0; i < enemies.Length; i++)
+                    {
+                        enemies[i].SetActive(true);
+                    }
+                    isPressT = true;
                 }
+            }
+            if (trasure.GetComponent<TreasureController>().isPlayerfoundTreasure)
+            {
+                instructionText.text = "Congratulations! Your quest is complete!";
             }
             instructionText.gameObject.SetActive(true);
         }
