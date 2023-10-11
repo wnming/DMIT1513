@@ -47,7 +47,7 @@ public class MapController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if(collision.gameObject.tag == "Player" && gameObject.GetComponent<Renderer>().enabled)
         {
             indicatorMap.SetActive(true);
             if(itemText.text.ToLower() == "no items")

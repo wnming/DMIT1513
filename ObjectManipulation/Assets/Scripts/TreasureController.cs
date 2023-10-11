@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class TreasureController : MonoBehaviour
 {
     [SerializeField] GameObject trasureOpen;
     [SerializeField] GameObject trasureClose;
+
+    [SerializeField] TextMeshProUGUI itemText;
 
     public bool isPlayerfoundTreasure;
 
@@ -24,6 +26,7 @@ public class TreasureController : MonoBehaviour
             trasureClose.SetActive(false);
             trasureOpen.SetActive(true);
             isPlayerfoundTreasure = true;
+            itemText.text += "Treasure|";
         }
     }
 }
