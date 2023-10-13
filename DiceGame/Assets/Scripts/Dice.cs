@@ -11,17 +11,17 @@ public class Dice : MonoBehaviour
     [SerializeField] Sprite[] DiceSprites;
 
     [SerializeField, Tooltip("The face value of the die.")]
-    public int diceValue;
+    public int diceValue { get; set; }
 
 
-    public int RollToRandomSide()
+    public void RollToRandomSide()
     {
         int newValue = Random.Range(1, 6);
-        for (int i = 0; i < 1000; i++)
-        {
-            gameObject.GetComponent<SpriteRenderer>().sprite = DiceSprites[Random.Range(1, 6) - 1];
-        }
+        //for (int i = 0; i < 1000; i++)
+        //{
+        //    gameObject.GetComponent<SpriteRenderer>().sprite = DiceSprites[Random.Range(1, 6) - 1];
+        //}
         gameObject.GetComponent<SpriteRenderer>().sprite = DiceSprites[newValue - 1];
-        return newValue;
+        diceValue = newValue;
     }
 }

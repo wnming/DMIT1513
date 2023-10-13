@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class ClaimButton : MonoBehaviour
 {
-    [SerializeField,HideInInspector]
+    [SerializeField]
     TMP_Text buttonText;
-    [SerializeField,HideInInspector]
+    [SerializeField]
     Button thisClaimButton;
-    public bool m_goalClaimed = false;
+    public bool isClaim = false;
 
     private void Awake()
     {
@@ -20,7 +20,7 @@ public class ClaimButton : MonoBehaviour
 
     public void Claim()
     {
-        m_goalClaimed = true;
+        isClaim = true;
         buttonText.text = "Claimed";
         buttonText.fontSizeMax = 14;
         thisClaimButton.interactable = false;

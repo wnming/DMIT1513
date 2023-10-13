@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class GoalGUIManager : MonoBehaviour
 {
     
-    [SerializeField]
-    ClaimButton[] goalButtons;
+    //[SerializeField]
+    public ClaimButton[] goalButtons;
     public static GoalGUIManager Instance;
     [SerializeField] Button rollTheDice;
 
@@ -35,13 +35,14 @@ public class GoalGUIManager : MonoBehaviour
     {
         foreach (ClaimButton button in goalButtons)
         {
-            if (!button.m_goalClaimed) 
+            if (!button.isClaim) 
             {
                 button.GetComponent<Button>().interactable = true;
             }
         }
         rollTheDice.GetComponent<Button>().interactable = true;
     }
+
     #region -- CLAIMING COMBOS
 
     /// Create logic in each section that prevents you from claiming the combination before it's valid.  
