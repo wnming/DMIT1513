@@ -31,13 +31,11 @@ public class DiceButton : MonoBehaviour
         {
             keepDice = true;
         }
-        Debug.Log("DiceButton: " + keepDice);
         buttonText.text = keepDice ? "Keep" : "Roll";
     }
 
     public void ResetDice()
     {
-        Debug.Log("ResetDice");
         keepDice = false;
         buttonText.text = "Roll";
     }

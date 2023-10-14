@@ -6,15 +6,14 @@ using UnityEngine.UI;
 
 public class ClaimButton : MonoBehaviour
 {
-    [SerializeField]
-    TMP_Text buttonText;
-    [SerializeField]
-    Button thisClaimButton;
+    [SerializeField] TMP_Text buttonText;
+    [SerializeField] Button thisClaimButton;
     public bool isClaim = false;
 
     private void Awake()
     {
         thisClaimButton = GetComponent<Button>();
+        thisClaimButton.gameObject.SetActive(false);
         buttonText.fontSizeMax = 18;
     }
 
@@ -24,5 +23,15 @@ public class ClaimButton : MonoBehaviour
         buttonText.text = "Claimed";
         buttonText.fontSizeMax = 14;
         thisClaimButton.interactable = false;
+    }
+
+    public void ShowClaimButton()
+    {
+        thisClaimButton.gameObject.SetActive(true);
+    }
+
+    public void HideClaimButton()
+    {
+        thisClaimButton.gameObject.SetActive(false);
     }
 }

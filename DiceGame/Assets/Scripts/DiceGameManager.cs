@@ -9,6 +9,8 @@ public class DiceGameManager : MonoBehaviour
     public List<Dice> Dicelist;
     public DiceButton[] KeepDiceButtons;
 
+    public AIActivationButton AIActivationButton;
+
     public List<CountDice> countDiceList;
     
     public bool isRolling;
@@ -58,8 +60,10 @@ public class DiceGameManager : MonoBehaviour
     IEnumerator RollAllDice()
     {
         isRolling = true;
+        GoalGUIManager.Instance.HideAllUnclaimButtons();
         CheckRollsLeft();
         GoalGUIManager.Instance.ProtectButtons();
+        AIActivationButton.ProtectButton();
         for(int index = 0; index < Dicelist.Count; index++)
         {
             if (!KeepDiceButtons[index].keepDice)
@@ -72,6 +76,7 @@ public class DiceGameManager : MonoBehaviour
         CountTheDice();
         EvaluateDiceAndCombo();
         isRolling = false;
+        AIActivationButton.ReleaseButton();
         GoalGUIManager.Instance.ReleaseButtons();
         rollCount += 1;
         StatsGUI.Instance.UpdateStatsGUI();
@@ -88,6 +93,11 @@ public class DiceGameManager : MonoBehaviour
         //    }
         //    rollsLeft = rollsMax;
         //}
+    }
+
+    public void TurnAIOnOff()
+    {
+        AIActivationButton.TurnAIOnOff();
     }
 
     void CountTheDice()
@@ -140,15 +150,167 @@ public class DiceGameManager : MonoBehaviour
         Debug.Log("fourKind: " + fourKind);
 
         //evaluate combo
-        bool keepChecking = true;
+        bool stopChecking = false;
+
         //large straight
-        if (keepChecking && !GoalGUIManager.Instance.goalButtons[3].isClaim)
+        if ((!stopChecking || !AIActivationButton.isAIOn) && !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.LargeStr].isClaim)
         {
-            keepChecking = LargeStr(maxRun);
-            if (!keepChecking)
+            stopChecking = LargeStr(maxRun);
+            if (stopChecking)
             {
-                GoalGUIManager.Instance.TryClaimingLargeStraight();
+                if (AIActivationButton.isAIOn)
+                {
+                    GoalGUIManager.Instance.TryClaimingLargeStraight();
+                }
+                else
+                {
+                    GoalGUIManager.Instance.EnableClaimingLargeStraight();
+                }
             }
+        }
+        //small straight
+        if ((!stopChecking || !AIActivationButton.isAIOn) && !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.SmallStr].isClaim)
+        {
+            stopChecking = SmallStr(maxRun);
+            if (stopChecking)
+            {
+                if (AIActivationButton.isAIOn)
+                {
+                    GoalGUIManager.Instance.TryClaimingSmallStraight();
+                }
+                else
+                {
+                    GoalGUIManager.Instance.EnableClaimingSmallStraight();
+                }
+            }
+        }
+        //full house
+        if ((!stopChecking || !AIActivationButton.isAIOn) && !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.FullHouse].isClaim)
+        {
+            stopChecking = FullHouse(threeKind, pairsList);
+            if (stopChecking)
+            {
+                if (AIActivationButton.isAIOn)
+                {
+                    GoalGUIManager.Instance.TryClaimingFullHouse();
+                }
+                else
+                {
+                    GoalGUIManager.Instance.EnableClaimingFullHouse();
+                }
+            }
+        }
+        //four kind
+        if ((!stopChecking || !AIActivationButton.isAIOn) && !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.FourKind].isClaim)
+        {
+            stopChecking = FourKind(fourKind);
+            if (stopChecking)
+            {
+                if (AIActivationButton.isAIOn)
+                {
+                    GoalGUIManager.Instance.TryClaimingFourOfAKind();
+                }
+                else
+                {
+                    GoalGUIManager.Instance.EnableClaimingFourOfAKind();
+                }
+            }
+        }
+        //three kind
+        if ((!stopChecking || !AIActivationButton.isAIOn) && !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.ThreeKind].isClaim)
+        {
+            stopChecking = ThreeKind(threeKind);
+            if (stopChecking)
+            {
+                if (AIActivationButton.isAIOn)
+                {
+                    GoalGUIManager.Instance.TryClaimingThreeOfAKind();
+                }
+                else
+                {
+                    GoalGUIManager.Instance.EnableClaimingThreeOfAKind();
+                }
+            }
+        }
+        //two paris
+        if ((!stopChecking || !AIActivationButton.isAIOn) && !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.TwoPairs].isClaim)
+        {
+            stopChecking = TwoPairs(pairsList);
+            if (stopChecking)
+            {
+                if (AIActivationButton.isAIOn)
+                {
+                    GoalGUIManager.Instance.TryClaimingTwoPairs();
+                }
+                else
+                {
+                    GoalGUIManager.Instance.EnableClaimingTwoPairs();
+                }
+            }
+        }
+
+        if (!stopChecking && AIActivationButton.isAIOn)
+        {
+            //decide what to keep
+            if(pairsList.Count == 2 && (
+                //!GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.TwoPairs].isClaim ||
+                //!GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.ThreeKind].isClaim ||
+                //!GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.FourKind].isClaim ||
+                !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.FullHouse].isClaim
+                ))
+            {
+                for (int index = 0; index < Dicelist.Count; index++)
+                {
+                    if (Dicelist[index].diceValue == pairsList[0] || Dicelist[index].diceValue == pairsList[1])
+                    {
+                        KeepDiceButtons[index].keepDice = true;
+                    }
+                }
+            }else if (maxRun > 2 && (
+                !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.SmallStr].isClaim ||
+                !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.LargeStr].isClaim
+                ))
+            {
+                while(startRun <= maxRun)
+                {
+                    int index = Dicelist.FindIndex(x => x.diceValue == startRun);
+                    KeepDiceButtons[index].keepDice = true;
+                    startRun++;
+                }
+            }else if(threeKind != 0 && !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.FourKind].isClaim)
+            {
+                for (int index = 0; index < Dicelist.Count; index++)
+                {
+                    if (Dicelist[index].diceValue == threeKind)
+                    {
+                        KeepDiceButtons[index].keepDice = true;
+                    }
+                }
+            //The AI will keep pairs when at least one of the following combos are available. Two Pair, Three of a Kind, Four of a Kind, Full House.
+            }
+            else if (pairsList.Count == 1 && (
+                !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.TwoPairs].isClaim ||
+                !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.ThreeKind].isClaim ||
+                !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.FourKind].isClaim ||
+                !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.FullHouse].isClaim
+                ))
+            {
+                for (int index = 0; index < Dicelist.Count; index++)
+                {
+                    if (Dicelist[index].diceValue == pairsList[0])
+                    {
+                        KeepDiceButtons[index].keepDice = true;
+                    }
+                }
+            }
+            else
+            {
+                //reset
+            }
+        }
+        else
+        {
+            //reset
         }
     }
 
@@ -156,8 +318,53 @@ public class DiceGameManager : MonoBehaviour
     {
         if(maxRun == 5)
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
+    }
+
+    bool SmallStr(int maxRun)
+    {
+        if (maxRun >= 4)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool FullHouse(int threeKind, List<int> pairsList)
+    {
+        if (threeKind != 0 && pairsList.Count > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool FourKind(int threeKind)
+    {
+        if (threeKind != 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool ThreeKind(int fourKind)
+    {
+        if (fourKind != 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool TwoPairs(List<int> pairsList)
+    {
+        if (pairsList.Count >= 2)
+        {
+            return true;
+        }
+        return false;
     }
 }

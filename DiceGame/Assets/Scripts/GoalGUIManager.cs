@@ -5,7 +5,15 @@ using UnityEngine.UI;
 
 public class GoalGUIManager : MonoBehaviour
 {
-    
+    public enum ComboTypes
+    {
+        ThreeKind,
+        FourKind,
+        SmallStr,
+        LargeStr,
+        TwoPairs,
+        FullHouse
+    }
     //[SerializeField]
     public ClaimButton[] goalButtons;
     public static GoalGUIManager Instance;
@@ -43,6 +51,17 @@ public class GoalGUIManager : MonoBehaviour
         rollTheDice.GetComponent<Button>().interactable = true;
     }
 
+    public void HideAllUnclaimButtons()
+    {
+        for(int index = 0; index < goalButtons.Length; index++)
+        {
+            if (!goalButtons[index].isClaim)
+            {
+                goalButtons[index].HideClaimButton();
+            }
+        }
+    }
+
     #region -- CLAIMING COMBOS
 
     /// Create logic in each section that prevents you from claiming the combination before it's valid.  
@@ -50,32 +69,70 @@ public class GoalGUIManager : MonoBehaviour
 
     public void TryClaimingThreeOfAKind()
     {
-        goalButtons[0].Claim();
+        goalButtons[(int)ComboTypes.ThreeKind].Claim();
+        HideAllUnclaimButtons();
     }
 
     public void TryClaimingFourOfAKind()
     {
-        goalButtons[1].Claim();
+        goalButtons[(int)ComboTypes.FourKind].Claim();
+        HideAllUnclaimButtons();
     }
 
     public void TryClaimingSmallStraight()
     {
-        goalButtons[2].Claim();
+        goalButtons[(int)ComboTypes.SmallStr].Claim();
+        HideAllUnclaimButtons();
     }
 
     public void TryClaimingLargeStraight()
     {
-        goalButtons[3].Claim();
+        goalButtons[(int)ComboTypes.LargeStr].Claim();
+        HideAllUnclaimButtons();
     }
 
     public void TryClaimingTwoPairs()
     {
-        goalButtons[4].Claim();
+        goalButtons[(int)ComboTypes.TwoPairs].Claim();
+        HideAllUnclaimButtons();
     }
 
     public void TryClaimingFullHouse()
     {
-        goalButtons[5].Claim();
+        goalButtons[(int)ComboTypes.FullHouse].Claim();
+        HideAllUnclaimButtons();
+    }
+    #endregion
+
+    #region --SHOWING MATCH COMBO BUTTONS
+    public void EnableClaimingThreeOfAKind()
+    {
+        goalButtons[(int)ComboTypes.ThreeKind].ShowClaimButton();
+    }
+
+    public void EnableClaimingFourOfAKind()
+    {
+        goalButtons[(int)ComboTypes.FourKind].ShowClaimButton();
+    }
+
+    public void EnableClaimingSmallStraight()
+    {
+        goalButtons[(int)ComboTypes.SmallStr].ShowClaimButton();
+    }
+
+    public void EnableClaimingLargeStraight()
+    {
+        goalButtons[(int)ComboTypes.LargeStr].ShowClaimButton();
+    }
+
+    public void EnableClaimingTwoPairs()
+    {
+        goalButtons[(int)ComboTypes.TwoPairs].ShowClaimButton();
+    }
+
+    public void EnableClaimingFullHouse()
+    {
+        goalButtons[(int)ComboTypes.FullHouse].ShowClaimButton();
     }
     #endregion
 }

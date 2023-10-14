@@ -395,7 +395,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 855e85ca2c78b6e489dc4e98d37c635c, type: 3}
   - {fileID: 21300000, guid: 2a73f577096c9244abc1dec21d00bd40, type: 3}
   - {fileID: 21300000, guid: f428b53da72b3834fb5557643babc09e, type: 3}
-  diceValue: 0
 --- !u!212 &126052726
 SpriteRenderer:
   m_ObjectHideFlags: 2
@@ -952,7 +951,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 855e85ca2c78b6e489dc4e98d37c635c, type: 3}
   - {fileID: 21300000, guid: 2a73f577096c9244abc1dec21d00bd40, type: 3}
   - {fileID: 21300000, guid: f428b53da72b3834fb5557643babc09e, type: 3}
-  diceValue: 0
 --- !u!212 &364161492
 SpriteRenderer:
   m_ObjectHideFlags: 2
@@ -1422,6 +1420,7 @@ GameObject:
   - component: {fileID: 437437302}
   - component: {fileID: 437437301}
   - component: {fileID: 437437300}
+  - component: {fileID: 437437303}
   m_Layer: 5
   m_Name: AIActivated
   m_TagString: Untagged
@@ -1493,7 +1492,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 437437301}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1063446262}
+        m_TargetAssemblyTypeName: DiceGameManager, Assembly-CSharp
+        m_MethodName: TurnAIOnOff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &437437301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1532,6 +1543,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 437437298}
   m_CullTransparentMesh: 1
+--- !u!114 &437437303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437437298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c34c36e5b3eeee44baf31a30dffa8fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonText: {fileID: 2120156797}
+  AIOnOffButton: {fileID: 437437300}
+  isAIOn: 0
 --- !u!1 &496913575
 GameObject:
   m_ObjectHideFlags: 0
@@ -3381,7 +3407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonText: {fileID: 1837093294}
   thisClaimButton: {fileID: 0}
-  m_goalClaimed: 0
+  isClaim: 0
 --- !u!1 &981190170
 GameObject:
   m_ObjectHideFlags: 0
@@ -3531,7 +3557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonText: {fileID: 430606550}
   thisClaimButton: {fileID: 0}
-  m_goalClaimed: 0
+  isClaim: 0
 --- !u!1 &987027032
 GameObject:
   m_ObjectHideFlags: 1
@@ -3998,7 +4024,16 @@ MonoBehaviour:
   - {fileID: 2055635140}
   - {fileID: 1727267431}
   - {fileID: 1296324475}
+  AIActivationButton: {fileID: 437437303}
+  countDiceList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isRolling: 0
+  isFirstTurn: 0
   rollCount: 0
   score: 0
   rollsLeft: 0
@@ -4288,7 +4323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonText: {fileID: 1811603285}
   thisClaimButton: {fileID: 0}
-  m_goalClaimed: 0
+  isClaim: 0
 --- !u!1 &1193990245
 GameObject:
   m_ObjectHideFlags: 0
@@ -4342,7 +4377,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 855e85ca2c78b6e489dc4e98d37c635c, type: 3}
   - {fileID: 21300000, guid: 2a73f577096c9244abc1dec21d00bd40, type: 3}
   - {fileID: 21300000, guid: f428b53da72b3834fb5557643babc09e, type: 3}
-  diceValue: 0
 --- !u!212 &1193990248
 SpriteRenderer:
   m_ObjectHideFlags: 2
@@ -4922,7 +4956,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonText: {fileID: 1495381840}
   thisClaimButton: {fileID: 0}
-  m_goalClaimed: 0
+  isClaim: 0
 --- !u!1 &1473943618
 GameObject:
   m_ObjectHideFlags: 1
@@ -5246,7 +5280,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 855e85ca2c78b6e489dc4e98d37c635c, type: 3}
   - {fileID: 21300000, guid: 2a73f577096c9244abc1dec21d00bd40, type: 3}
   - {fileID: 21300000, guid: f428b53da72b3834fb5557643babc09e, type: 3}
-  diceValue: 0
 --- !u!212 &1594013189
 SpriteRenderer:
   m_ObjectHideFlags: 2
@@ -5404,7 +5437,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 855e85ca2c78b6e489dc4e98d37c635c, type: 3}
   - {fileID: 21300000, guid: 2a73f577096c9244abc1dec21d00bd40, type: 3}
   - {fileID: 21300000, guid: f428b53da72b3834fb5557643babc09e, type: 3}
-  diceValue: 0
 --- !u!1 &1688009929
 GameObject:
   m_ObjectHideFlags: 0
@@ -5826,7 +5858,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonText: {fileID: 776471820}
   thisClaimButton: {fileID: 0}
-  m_goalClaimed: 0
+  isClaim: 0
 --- !u!1 &1782190514
 GameObject:
   m_ObjectHideFlags: 0
@@ -6470,7 +6502,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonText: {fileID: 874112236}
   thisClaimButton: {fileID: 0}
-  m_goalClaimed: 0
+  isClaim: 0
 --- !u!1 &1932742080
 GameObject:
   m_ObjectHideFlags: 0
@@ -7205,7 +7237,7 @@ GameObject:
   - component: {fileID: 2120156798}
   - component: {fileID: 2120156797}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: AIOnOffText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7251,7 +7283,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: AI Off
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
