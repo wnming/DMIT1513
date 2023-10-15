@@ -20,6 +20,7 @@ public class ClaimButton : MonoBehaviour
     public void Claim()
     {
         isClaim = true;
+        thisClaimButton.gameObject.SetActive(true);
         buttonText.text = "Claimed";
         buttonText.fontSizeMax = 14;
         thisClaimButton.interactable = false;

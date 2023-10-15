@@ -3,25 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
 
 public class DiceGameManager : MonoBehaviour
 {
     public List<Dice> Dicelist;
     public DiceButton[] KeepDiceButtons;
 
+    [SerializeField] TMP_Dropdown[] specificResultDropdown;
+
     public AIActivationButton AIActivationButton;
+    public SpecificResult SpecificResultButton;
 
     public List<CountDice> countDiceList;
-    
+
     public bool isRolling;
     public bool isFirstTurn;
+    public bool isSpecificResult;
 
     public static DiceGameManager Instance;
 
     public int rollCount = 0;
     public int score = 0;
     public int rollsLeft = 0;
-    private int rollsMax = 1;
+    private int rollsMax = 3;
 
     private void Awake()
     {
@@ -41,6 +46,17 @@ public class DiceGameManager : MonoBehaviour
                 new CountDice() { diceNumber = 5, count = 0},
                 new CountDice() { diceNumber = 6, count = 0}
             };
+            HideInteractButton();
+            HideSpecificResultDropdown();
+            for (int index = 0; index < specificResultDropdown.Length; index++)
+            {
+                specificResultDropdown[index].options.Add(new TMP_Dropdown.OptionData() { text = "1" });
+                specificResultDropdown[index].options.Add(new TMP_Dropdown.OptionData() { text = "2" });
+                specificResultDropdown[index].options.Add(new TMP_Dropdown.OptionData() { text = "3" });
+                specificResultDropdown[index].options.Add(new TMP_Dropdown.OptionData() { text = "4" });
+                specificResultDropdown[index].options.Add(new TMP_Dropdown.OptionData() { text = "5" });
+                specificResultDropdown[index].options.Add(new TMP_Dropdown.OptionData() { text = "6" });
+            }
         }
         else
         {
@@ -52,52 +68,164 @@ public class DiceGameManager : MonoBehaviour
     {
         if (!isRolling)
         {
-            //RollAllDice();
             StartCoroutine(RollAllDice());
         }
     }
 
     IEnumerator RollAllDice()
     {
+        Debug.Log(GoalGUIManager.Instance.isClaimed);
+        ShowInteractButton();
         isRolling = true;
         GoalGUIManager.Instance.HideAllUnclaimButtons();
         CheckRollsLeft();
+        GoalGUIManager.Instance.SetIsClaimedToFalse();
         GoalGUIManager.Instance.ProtectButtons();
+        DisableInteractButton();
         AIActivationButton.ProtectButton();
-        for(int index = 0; index < Dicelist.Count; index++)
+        SpecificResultButton.ProtectButton();
+        if (SpecificResultButton.isSpecificResultOn && !AIActivationButton.isAIOn)
         {
-            if (!KeepDiceButtons[index].keepDice)
+            //produce specific result
+            for (int index = 0; index < Dicelist.Count; index++)
             {
-                Dicelist[index].RollToRandomSide();
+                if (!KeepDiceButtons[index].keepDice)
+                {
+                    Dicelist[index].ManualSpecificValue(specificResultDropdown[index].value + 1);
+                }
             }
         }
-        yield return new WaitForSeconds(0.55f);
+        else
+        {
+            if (AIActivationButton.isAIOn)
+            {
+                DisableInteractButton();
+            }
+            for (int index = 0; index < Dicelist.Count; index++)
+            {
+                if (!KeepDiceButtons[index].keepDice)
+                {
+                    Dicelist[index].RollToRandomSide();
+                }
+            }
+        }
+        yield return new WaitForSeconds(0.65f);
         //check all combos
         CountTheDice();
         EvaluateDiceAndCombo();
-        isRolling = false;
         AIActivationButton.ReleaseButton();
         GoalGUIManager.Instance.ReleaseButtons();
+        if (!AIActivationButton.isAIOn)
+        {
+            EnableInteractButton();
+            SpecificResultButton.ReleaseButton();
+        }
+        isRolling = false;
         rollCount += 1;
         StatsGUI.Instance.UpdateStatsGUI();
     }
 
     void CheckRollsLeft()
     {
-        //rollsLeft -= 1;
-        //if (rollsLeft < 0)
-        //{
-        //    foreach (var d in KeepDiceButtons)
-        //    {
-        //        d.ResetDice();
-        //    }
-        //    rollsLeft = rollsMax;
-        //}
+        rollsLeft -= 1;
+        if (rollsLeft < 0 || (GoalGUIManager.Instance.isClaimed && !AIActivationButton.isAIOn))
+        {
+            foreach (var keep in KeepDiceButtons)
+            {
+                keep.ResetDice();
+            }
+            rollsLeft = rollsMax;
+        }
+    }
+
+    public void ShowInteractButton()
+    {
+        for (int index = 0; index < KeepDiceButtons.Length; index++)
+        {
+            KeepDiceButtons[index].ShowButton();
+        }
+    }
+
+    public void HideInteractButton()
+    {
+        for (int index = 0; index < KeepDiceButtons.Length; index++)
+        {
+            KeepDiceButtons[index].HideButton();
+        }
+    }
+
+    public void DisableInteractButton()
+    {
+        for (int index = 0; index < KeepDiceButtons.Length; index++)
+        {
+            KeepDiceButtons[index].DisableInteractButton();
+        }
+    }
+
+    public void EnableInteractButton()
+    {
+        for (int index = 0; index < KeepDiceButtons.Length; index++)
+        {
+            KeepDiceButtons[index].EnableInteractButton();
+        }
     }
 
     public void TurnAIOnOff()
     {
         AIActivationButton.TurnAIOnOff();
+        if (AIActivationButton.isAIOn)
+        {
+            DisableInteractButton();
+            //disable specific result
+            //ResetSpecificResult();
+            SpecificResultButton.TurnSpecificResultOff();
+            HideSpecificResultDropdown();
+            SpecificResultButton.ProtectButton();
+        }
+        else
+        {
+            EnableInteractButton();
+            //ShowSpecificResultDropdown();
+            SpecificResultButton.ReleaseButton();
+        }
+    }
+
+    public void TurnSpecificResultOnOff()
+    {
+        SpecificResultButton.TurnSpecificResultOnOff();
+        if (SpecificResultButton.isSpecificResultOn)
+        {
+            ShowSpecificResultDropdown();
+        }
+        else
+        {
+            HideSpecificResultDropdown();
+        }
+    }
+
+    public void ResetSpecificResult()
+    {
+        for(int index = 0; index < specificResultDropdown.Length; index++)
+        {
+            specificResultDropdown[index].value = 0;
+        }
+    }
+
+    public void HideSpecificResultDropdown()
+    {
+        ResetSpecificResult();
+        for (int index = 0; index < specificResultDropdown.Length; index++)
+        {
+            specificResultDropdown[index].gameObject.SetActive(false);
+        }
+    }
+
+    public void ShowSpecificResultDropdown()
+    {
+        for (int index = 0; index < specificResultDropdown.Length; index++)
+        {
+            specificResultDropdown[index].gameObject.SetActive(true);
+        }
     }
 
     void CountTheDice()
@@ -208,6 +336,7 @@ public class DiceGameManager : MonoBehaviour
             {
                 if (AIActivationButton.isAIOn)
                 {
+                    Debug.Log("four");
                     GoalGUIManager.Instance.TryClaimingFourOfAKind();
                 }
                 else
@@ -251,11 +380,9 @@ public class DiceGameManager : MonoBehaviour
 
         if (!stopChecking && AIActivationButton.isAIOn)
         {
+            ResetAllKeepDice();
             //decide what to keep
-            if(pairsList.Count == 2 && (
-                //!GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.TwoPairs].isClaim ||
-                //!GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.ThreeKind].isClaim ||
-                //!GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.FourKind].isClaim ||
+            if (pairsList.Count == 2 && (
                 !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.FullHouse].isClaim
                 ))
             {
@@ -263,7 +390,7 @@ public class DiceGameManager : MonoBehaviour
                 {
                     if (Dicelist[index].diceValue == pairsList[0] || Dicelist[index].diceValue == pairsList[1])
                     {
-                        KeepDiceButtons[index].keepDice = true;
+                        KeepDiceButtons[index].ToggleDice();
                     }
                 }
             }else if (maxRun > 2 && (
@@ -271,10 +398,11 @@ public class DiceGameManager : MonoBehaviour
                 !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.LargeStr].isClaim
                 ))
             {
-                while(startRun <= maxRun)
+                int countRun = startRun + maxRun;
+                while (startRun < countRun)
                 {
                     int index = Dicelist.FindIndex(x => x.diceValue == startRun);
-                    KeepDiceButtons[index].keepDice = true;
+                    KeepDiceButtons[index].ToggleDice();
                     startRun++;
                 }
             }else if(threeKind != 0 && !GoalGUIManager.Instance.goalButtons[(int)GoalGUIManager.ComboTypes.FourKind].isClaim)
@@ -283,7 +411,7 @@ public class DiceGameManager : MonoBehaviour
                 {
                     if (Dicelist[index].diceValue == threeKind)
                     {
-                        KeepDiceButtons[index].keepDice = true;
+                        KeepDiceButtons[index].ToggleDice();
                     }
                 }
             //The AI will keep pairs when at least one of the following combos are available. Two Pair, Three of a Kind, Four of a Kind, Full House.
@@ -299,18 +427,34 @@ public class DiceGameManager : MonoBehaviour
                 {
                     if (Dicelist[index].diceValue == pairsList[0])
                     {
-                        KeepDiceButtons[index].keepDice = true;
+                        KeepDiceButtons[index].ToggleDice();
                     }
                 }
             }
             else
             {
                 //reset
+                rollsLeft = rollsMax;
+                ResetAllKeepDice();
             }
         }
         else
         {
             //reset
+            if(stopChecking && AIActivationButton.isAIOn)
+            {
+                //reset keep
+                rollsLeft = rollsMax;
+                ResetAllKeepDice();
+            }
+        }
+    }
+
+    void ResetAllKeepDice()
+    {
+        for (int index = 0; index < KeepDiceButtons.Length; index++)
+        {
+            KeepDiceButtons[index].ResetDice();
         }
     }
 
