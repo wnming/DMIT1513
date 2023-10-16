@@ -129,6 +129,10 @@ public class DiceGameManager : MonoBehaviour
             EnableInteractButton();
             SpecificResultButton.ReleaseButton();
         }
+        else
+        {
+            AIRollButton.ReleaseButton();
+        }
         isRolling = false;
         rollCount += 1;
         StatsGUI.Instance.UpdateStatsGUI();
