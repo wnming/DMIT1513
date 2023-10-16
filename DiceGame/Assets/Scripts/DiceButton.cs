@@ -28,12 +28,18 @@ public class DiceButton : MonoBehaviour
 
     public void DisableInteractButton()
     {
-        keepButton.interactable = false;
+        if (keepButton)
+        {
+            keepButton.interactable = false;
+        }
     }
 
     public void EnableInteractButton()
     {
-        keepButton.interactable = true;
+        if (keepButton)
+        {
+            keepButton.interactable = true;
+        }
     }
 
     public void HideButton()

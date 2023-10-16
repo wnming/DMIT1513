@@ -40,7 +40,7 @@ public class GoalGUIManager : MonoBehaviour
         {
             button.GetComponent<Button>().interactable = false;
         }
-        rollTheDice.GetComponent<Button>().interactable = false;
+        ProtectRollDiceButton();
     }
     public void ReleaseButtons()
     {
@@ -51,6 +51,16 @@ public class GoalGUIManager : MonoBehaviour
                 button.GetComponent<Button>().interactable = true;
             }
         }
+        ReleaseRollDiceButton();
+    }
+
+    public void ProtectRollDiceButton()
+    {
+        rollTheDice.GetComponent<Button>().interactable = false;
+    }
+
+    public void ReleaseRollDiceButton()
+    {
         rollTheDice.GetComponent<Button>().interactable = true;
     }
 

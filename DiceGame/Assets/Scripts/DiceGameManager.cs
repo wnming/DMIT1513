@@ -14,6 +14,7 @@ public class DiceGameManager : MonoBehaviour
 
     public AIActivationButton AIActivationButton;
     public SpecificResult SpecificResultButton;
+    public AIRollButton AIRollButton;
 
     public List<CountDice> countDiceList;
 
@@ -37,6 +38,7 @@ public class DiceGameManager : MonoBehaviour
             score = 0;
             rollsLeft = rollsMax;
             isFirstTurn = true;
+            isRolling = false;
             countDiceList = new List<CountDice>()
             {
                 new CountDice() { diceNumber = 1, count = 0},
@@ -74,6 +76,7 @@ public class DiceGameManager : MonoBehaviour
 
     IEnumerator RollAllDice()
     {
+        //if(AIRollButton.isAIRollOn || (AIActivationButton.isAIOn && !AIRollButton.isAIRollOn)) { }
         Debug.Log(GoalGUIManager.Instance.isClaimed);
         ShowInteractButton();
         isRolling = true;
@@ -84,6 +87,7 @@ public class DiceGameManager : MonoBehaviour
         DisableInteractButton();
         AIActivationButton.ProtectButton();
         SpecificResultButton.ProtectButton();
+        AIRollButton.TemporaryProtectButton();
         if (SpecificResultButton.isSpecificResultOn && !AIActivationButton.isAIOn)
         {
             //produce specific result
@@ -115,6 +119,11 @@ public class DiceGameManager : MonoBehaviour
         EvaluateDiceAndCombo();
         AIActivationButton.ReleaseButton();
         GoalGUIManager.Instance.ReleaseButtons();
+        if (AIRollButton.isAIRollOn)
+        {
+            GoalGUIManager.Instance.ProtectRollDiceButton();
+            AIRollButton.ReleaseButton();
+        }
         if (!AIActivationButton.isAIOn)
         {
             EnableInteractButton();
@@ -181,12 +190,15 @@ public class DiceGameManager : MonoBehaviour
             SpecificResultButton.TurnSpecificResultOff();
             HideSpecificResultDropdown();
             SpecificResultButton.ProtectButton();
+            AIRollButton.ReleaseButton();
         }
         else
         {
             EnableInteractButton();
             //ShowSpecificResultDropdown();
             SpecificResultButton.ReleaseButton();
+            AIRollButton.ProtectButton();
+            GoalGUIManager.Instance.ReleaseRollDiceButton();
         }
     }
 
@@ -201,6 +213,30 @@ public class DiceGameManager : MonoBehaviour
         {
             HideSpecificResultDropdown();
         }
+    }
+
+    public void TurnAIRollOnOff()
+    {
+        AIRollButton.TurnAIOnOff();
+        if (AIRollButton.isAIRollOn)
+        {
+            GoalGUIManager.Instance.ProtectRollDiceButton();
+        }
+        else
+        {
+            GoalGUIManager.Instance.ReleaseRollDiceButton();
+        }
+        StartCoroutine(AIRoll());
+    }
+
+    public IEnumerator AIRoll()
+    {
+        while (AIRollButton.isAIRollOn)
+        {
+            Roll();
+            yield return new WaitForSeconds(5f);
+        }
+        yield return new WaitForSeconds(5f);
     }
 
     public void ResetSpecificResult()
