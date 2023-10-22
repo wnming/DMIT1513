@@ -281,10 +281,12 @@ public class DiceGameManager : MonoBehaviour
 
     void EvaluateDiceAndCombo()
     {
+        Debug.Log(Dicelist[0].diceValue +" " +Dicelist[1].diceValue + " " + Dicelist[2].diceValue + " " + Dicelist[3].diceValue + " " + Dicelist[4].diceValue);
         //Straight
         int maxRun = 1;
         int startRun = 0;
         List<int> sequentialNumber = Dicelist.Select(x => x.diceValue).OrderBy(y => y).ToList();
+        Debug.Log(sequentialNumber[0] + " " + sequentialNumber[1] + " " + sequentialNumber[2] + " " + sequentialNumber[3] + " " + sequentialNumber[4]);
         for (int index = 0; index < sequentialNumber.Count - 1; index++)
         {
             if (sequentialNumber[index + 1] - sequentialNumber[index] == 1)
@@ -295,7 +297,7 @@ public class DiceGameManager : MonoBehaviour
             else
             {
                 //if the next to number is not the same, set maxRun = 0
-                if(sequentialNumber[index + 1] - sequentialNumber[index] != 0)
+                if(sequentialNumber[index + 1] - sequentialNumber[index] != 0 && maxRun < 3)
                 {
                     maxRun = 1;
                 }
@@ -418,8 +420,9 @@ public class DiceGameManager : MonoBehaviour
             }
         }
 
-        if (!stopChecking && AIActivationButton.isAIOn)
+        if (!stopChecking && AIActivationButton.isAIOn || (!stopChecking && SpecificResultButton.isSpecificResultOn))
         {
+            Debug.Log("ffffffffffffffffff");
             ResetAllKeepDice();
             //decide what to keep
             if (pairsList.Count == 2 && (
