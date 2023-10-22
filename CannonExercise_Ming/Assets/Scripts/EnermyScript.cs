@@ -1,23 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-
 public class EnermyScript : MonoBehaviour
 {
     [SerializeField] GameObject explosionParticle;
     [SerializeField] GameObject explodeZombie;
     AudioSource explosionSource;
+    public WeaponControl weapon;
     void Start()
     {
         gameObject.SetActive(true);
-        explosionSource = GetComponent<AudioSource>();
     }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Bullet")
         {
-            explosionSource.Play();
+            if (weapon.GetComponent<AudioSource>().isPlaying)
+            {
+                weapon.GetComponent<AudioSource>().Stop();
+            }
             Death();
         }
     }
@@ -25,6 +26,8 @@ public class EnermyScript : MonoBehaviour
     {
         gameObject.SetActive(false);
         GameObject explodeZombieObj = Instantiate(explodeZombie, transform.position, transform.rotation) as GameObject;
+        explosionSource = explodeZombieObj.GetComponent<AudioSource>();
+        explosionSource.Play();
         if (explosionParticle != null)
         {
             Instantiate(explosionParticle, transform.position, transform.rotation);
@@ -40,7 +43,6 @@ public class EnermyScript : MonoBehaviour
                 rb.AddExplosionForce(500.0f, explosionPos, 5.0f, 3.0f);
             }
         }
-        explosionSource.Stop();
         Destroy(explodeZombieObj, 4);
     }
 }

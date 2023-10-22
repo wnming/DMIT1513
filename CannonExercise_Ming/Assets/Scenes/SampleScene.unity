@@ -728,6 +728,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1929166465}
     m_Modifications:
+    - target: {fileID: 1858281916239487441, guid: dc7e45f5f8f700449b1e5ee0e7fda889, type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 1830122339}
     - target: {fileID: 2456748712407318239, guid: dc7e45f5f8f700449b1e5ee0e7fda889, type: 3}
       propertyPath: m_Name
       value: Zombie3
@@ -774,6 +778,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2460943846190773067, guid: dc7e45f5f8f700449b1e5ee0e7fda889, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3984240388188826759, guid: dc7e45f5f8f700449b1e5ee0e7fda889, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3984240388188826759, guid: dc7e45f5f8f700449b1e5ee0e7fda889, type: 3}
+      propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1104,6 +1116,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1929166465}
     m_Modifications:
+    - target: {fileID: 1858281916239487441, guid: dc7e45f5f8f700449b1e5ee0e7fda889, type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 1830122339}
     - target: {fileID: 2456748712407318239, guid: dc7e45f5f8f700449b1e5ee0e7fda889, type: 3}
       propertyPath: m_Name
       value: Zombie1
@@ -1154,7 +1170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3984240388188826759, guid: dc7e45f5f8f700449b1e5ee0e7fda889, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc7e45f5f8f700449b1e5ee0e7fda889, type: 3}
@@ -6108,7 +6124,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -6138,7 +6154,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -133.72574, w: 0}
+  m_margin: {x: 0, y: 0, z: -168.88005, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -6159,6 +6175,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1929166465}
     m_Modifications:
+    - target: {fileID: 1858281916239487441, guid: dc7e45f5f8f700449b1e5ee0e7fda889, type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 1830122339}
     - target: {fileID: 2456748712407318239, guid: dc7e45f5f8f700449b1e5ee0e7fda889, type: 3}
       propertyPath: m_Name
       value: Zombie2
