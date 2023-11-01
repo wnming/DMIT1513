@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -23,6 +24,7 @@ public class VendingMachineController : MonoBehaviour
 
     Vector3 weaponHolderLastPosition;
     Quaternion weaponHolderLastRotation;
+    GameObject lastWeaponSelection;
 
     public bool isPressT;
     private bool isSelected;
@@ -57,6 +59,7 @@ public class VendingMachineController : MonoBehaviour
                 {
                     weaponHolderLastPosition = weaponHolder.transform.position;
                     weaponHolderLastRotation = weaponHolder.transform.rotation;
+                    //lastWeaponSelection = weaponHolder.transform.GetChild(0).gameObject;
                 }
                 weaponHolder.transform.position = weaponHolderOriginalPosition;
                 weaponHolder.transform.localScale = new Vector3(2, 2, 2);
@@ -77,24 +80,28 @@ public class VendingMachineController : MonoBehaviour
         }
     }
 
-    public void CloseWeaponSelection()
-    {
-        weaponSelectionCamera.enabled = false;
-        playerCamera.enabled = true;
-        dLight.enabled = true;
-        weaponSelectionUI.enabled = false;
-        Debug.Log(isSelected);
-        if (!isSelected)
-        {
-            weaponHolder.gameObject.SetActive(false);
-        }
-        else
-        {
-            weaponHolder.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
-            weaponHolder.transform.position = weaponHolderLastPosition;
-            weaponHolder.transform.rotation = weaponHolderLastRotation;
-        }
-    }
+    //public void CloseWeaponSelection()
+    //{
+    //    weaponSelectionCamera.enabled = false;
+    //    playerCamera.enabled = true;
+    //    dLight.enabled = true;
+    //    weaponSelectionUI.enabled = false;
+    //    Debug.Log(isSelected);
+    //    if (!isSelected)
+    //    {
+    //        weaponHolder.gameObject.SetActive(false);
+    //    }
+    //    else
+    //    {
+    //        Debug.Log(lastWeaponSelection);
+    //        Destroy(weaponHolder.transform.GetChild(0).gameObject);
+    //        Debug.Log(lastWeaponSelection);
+    //        lastWeaponSelection.transform.parent = weaponHolder.transform;
+    //        weaponHolder.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+    //        weaponHolder.transform.position = weaponHolderLastPosition;
+    //        weaponHolder.transform.rotation = weaponHolderLastRotation;
+    //    }
+    //}
 
     public void SelectWeapon()
     {
