@@ -8,13 +8,27 @@ public class FlickerLight : MonoBehaviour
     float delayTime;
     [SerializeField] GameObject light;
     [SerializeField] AudioSource lightSwitchingSound;
+    public MonsterObject monsterObject;
 
     void Update()
     {
-        if (!isFlickering)
+        if (!isFlickering && !monsterObject.isEnd)
         {
             StartCoroutine(FlickeringLight());
         }
+        else
+        {
+            if (monsterObject.isEnd)
+            {
+                TurnAllTheLights();
+            }
+        }
+    }
+
+    void TurnAllTheLights()
+    {
+        light.GetComponent<Renderer>().materials[1].color = new Color(1.0f, 0.96f, 0, 1.0f);
+        gameObject.GetComponent<Light>().enabled = true;
     }
 
     IEnumerator FlickeringLight()

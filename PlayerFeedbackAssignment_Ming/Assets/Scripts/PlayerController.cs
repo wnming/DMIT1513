@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     GameSceneManager gameSceneManager;
     [SerializeField] GameObject pausePanel;
     [SerializeField] Camera playerCamera;
+    [SerializeField] Camera endGameCamera;
 
     public InputAction rotateAction;
     Vector2 rotateValue;
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
         rotationSpeed = 80.0f;
         gameSceneManager = new GameObject("GameSceneManager").AddComponent<GameSceneManager>();
         pausePanel.SetActive(false);
+        endGameCamera.enabled = false;
     }
 
     private void Update()
@@ -99,13 +101,6 @@ public class PlayerController : MonoBehaviour
         gameSceneManager.LoadMainMenu();
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        //if (collision.gameObject.CompareTag("Npc") || collision.gameObject.CompareTag("Floor"))
-        //{
-        //    isJumping = false;
-        //}
-    }
     private void OnEnable()
     {
         rotateAction.Enable();

@@ -13,6 +13,7 @@ public class SlidingDoor : MonoBehaviour
     float nextEffect;
 
     [SerializeField] GameObject sparkleEffect;
+    public MonsterObject monsterObject;
 
     void Awake()
     {
@@ -24,18 +25,20 @@ public class SlidingDoor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(startingPos.x + (Mathf.Sin(Time.time * speed) * amount), transform.position.y, transform.position.z);
-        if ((transform.position - startingPos).magnitude > 0.25f)
-            transform.position = startingPos;
-
-        effectRate = Random.Range(3.0f, 11.0f);
-
-        if (Time.time > nextEffect && sparkleEffect != null)
+        if (!monsterObject.isEnd)
         {
-            nextEffect = Time.time + effectRate;
+            transform.position = new Vector3(startingPos.x + (Mathf.Sin(Time.time * speed) * amount), transform.position.y, transform.position.z);
+            if ((transform.position - startingPos).magnitude > 0.25f)
+                transform.position = startingPos;
 
-            Instantiate(sparkleEffect, new Vector3(transform.position.x + 1.6f, transform.position.y + 3 - Random.Range(0,8), transform.position.z - 0.2f), transform.rotation);
-            // new Quaternion(90, transform.rotation.y, transform.rotation.z, transform.rotation.w)
+            effectRate = Random.Range(3.0f, 11.0f);
+
+            if (Time.time > nextEffect && sparkleEffect != null)
+            {
+                nextEffect = Time.time + effectRate;
+
+                Instantiate(sparkleEffect, new Vector3(transform.position.x + 1.6f, transform.position.y + 3 - Random.Range(0, 8), transform.position.z - 0.2f), transform.rotation);
+            }
         }
     }
 }
