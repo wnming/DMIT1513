@@ -6,12 +6,13 @@ using UnityEngine.EventSystems;
 
 public class ScreenControl : MonoBehaviour
 {
-    [SerializeField] Material malfunctioningCameraMat;
-    [SerializeField] Material functioningCameraMat;
+    [SerializeField] GameObject malfunctioningCamera;
+    [SerializeField] GameObject functioningCamera;
     [SerializeField] GameObject switchCamera;
     [SerializeField] GameObject player;
     [SerializeField] Canvas switchCameraCanvas;
     [SerializeField] AudioSource crashAudio;
+    public MalfunctioningCamera malfunctioning;
 
     float range = 5.5f;
 
@@ -24,11 +25,13 @@ public class ScreenControl : MonoBehaviour
     public bool isActivateMonsterController = false;
     private bool isPlayMulfunctioning = true;
     private bool isPlayCrash = true;
-    float doubleClickTime = 0.2f, lastClickTime;
+    private bool isOkToSwitch = true;
 
     private void Start()
     {
         switchCameraCanvas.gameObject.SetActive(false);
+        malfunctioningCamera.SetActive(true);
+        functioningCamera.SetActive(false);
     }
 
 
@@ -37,69 +40,84 @@ public class ScreenControl : MonoBehaviour
         if (Vector3.Distance(switchCamera.transform.position, player.transform.position) < range)
         {
             switchCameraCanvas.gameObject.SetActive(true);
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && isOkToSwitch)
             {
-                float timeSinceLastClick = Time.time - lastClickTime;
-                if (timeSinceLastClick <= doubleClickTime)
-                    Debug.Log("Double click");
-                else
-                    StartCoroutine(CheckClickSwitchCamera());
-
-                lastClickTime = Time.time;
-            }
-        }
-        else
-        {
-            switchCameraCanvas.gameObject.SetActive(false);
-        }
-        if (!isSwitching && isPlayMulfunctioning)
-        {
-            StartCoroutine(OnOffScreen());
-        }
-    }
-
-    IEnumerator CheckClickSwitchCamera()
-    {
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit))
-        {
-            if (hit.transform.gameObject.name == "SwitchCamera")
-            {
-                isPlayMulfunctioning = false;
-                if (gameObject.GetComponent<Renderer>().material.name.Contains("MalfunctioningCamera"))
+                isOkToSwitch = false;
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit))
                 {
-                    if (isEndGame)
+                    if (hit.transform.gameObject.name == "SwitchCamera")
                     {
-                        if (isPlayCrash)
+                        if (malfunctioningCamera.activeSelf)
                         {
-                            isActivateMonsterController = true;
-                            crashAudio.Play();
-                            isPlayCrash = false;
+                            malfunctioningCamera.SetActive(false);
+                            functioningCamera.SetActive(true);
+                            if (isEndGame)
+                            {
+                                if (isPlayCrash)
+                                {
+                                    isActivateMonsterController = true;
+                                    crashAudio.Play();
+                                    isPlayCrash = false;
+                                }
+                            }
                         }
-                    }
-                    gameObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                    gameObject.GetComponent<Renderer>().material = functioningCameraMat;
-                }
-                else
-                {
-                    isEndGame = true;
-                    isPlayMulfunctioning = true;
-                }
-            }
-        }
-        yield return null;
-    }
+                        else
+                        {
+                            isEndGame = true;
+                            functioningCamera.SetActive(false);
+                            malfunctioningCamera.SetActive(true);
+                            malfunctioning.isSwitching = false;
+                        }
 
-    IEnumerator OnOffScreen()
-    {
-        isSwitching = true;
-        gameObject.GetComponent<Renderer>().material.color = new Color(0f, 0f, 0f, 1.0f);
-        delayTime = Random.Range(0.2f, 1.1f);
-        yield return new WaitForSeconds(delayTime);
-        gameObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        gameObject.GetComponent<Renderer>().material = malfunctioningCameraMat;
-        delayTime = Random.Range(0.3f, 2.2f);
-        yield return new WaitForSeconds(delayTime);
-        isSwitching = false;
+                        //if (gameObject.GetComponent<Renderer>().material.name.Contains("Malfunctioning"))
+                        //{
+                        //    isPlayMulfunctioning = false;
+                        //    if (isEndGame)
+                        //    {
+                        //        if (isPlayCrash)
+                        //        {
+                        //            isActivateMonsterController = true;
+                        //            crashAudio.Play();
+                        //            isPlayCrash = false;
+                        //        }
+                        //    }
+                        //    gameObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                        //    gameObject.GetComponent<Renderer>().material = functioningCameraMat;
+                        //}
+                        //else
+                        //{
+                        //    //Debug.Log(gameObject.GetComponent<Renderer>().material.name);
+                        //    isEndGame = true;
+                        //    isPlayMulfunctioning = true;
+                        //}
+                    }
+                }
+                //float timeSinceLastClick = Time.time - lastClickTime;
+                //if (timeSinceLastClick <= doubleClickTime)
+                //    Debug.Log("Double click");
+                //else
+                //    StartCoroutine(CheckClickSwitchCamera());
+
+                //lastClickTime = Time.time;
+                isOkToSwitch = true;
+            }
+            //else
+            //{
+            //    if (!isSwitching && isPlayMulfunctioning)
+            //    {
+            //        StartCoroutine(OnOffScreen());
+            //    }
+            //}
+        }
+        //else
+        //{
+        //    switchCameraCanvas.gameObject.SetActive(false);
+        //    //&& isPlayMulfunctioning && isOkToSwitch
+        //    if (!isSwitching)
+        //    {
+        //        StartCoroutine(OnOffScreen());
+        //    }
+        //}
     }
 }

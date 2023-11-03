@@ -22,7 +22,6 @@ public class SlidingDoor : MonoBehaviour
         startingPos.z = transform.position.z;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!monsterObject.isEnd)
