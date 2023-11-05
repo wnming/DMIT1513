@@ -110,6 +110,10 @@ public class ScreenControl : MonoBehaviour
             //    }
             //}
         }
+        else
+        {
+            switchCameraCanvas.gameObject.SetActive(false);
+        }
         //else
         //{
         //    switchCameraCanvas.gameObject.SetActive(false);
