@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     Vector2 rotateValue;
     Vector3 angles;
 
+    //[SerializeField] Camera cam;
+
     bool isHolding = false;
 
     void Start()
@@ -41,8 +43,9 @@ public class PlayerController : MonoBehaviour
         if (isHolding)
         {
             rotateValue = rotateAction.ReadValue<Vector2>();
-            transform.Rotate(Vector3.left, rotateValue.y * rotationSpeed * Time.deltaTime);
             transform.Rotate(Vector3.up, rotateValue.x * rotationSpeed * Time.deltaTime);
+
+            transform.Rotate(Vector3.left, rotateValue.y * rotationSpeed * Time.deltaTime);
 
             angles = transform.eulerAngles;
 
