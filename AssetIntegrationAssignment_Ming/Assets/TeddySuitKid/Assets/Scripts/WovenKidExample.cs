@@ -44,45 +44,10 @@ public class WovenKidExample : MonoBehaviour {
 	void Update () {
         //float horizontalInput = Input.GetAxis("Horizontal");
         //float verticalInput = Input.GetAxis("Vertical");
-        if (player.isJumping)
-        {
-            anim.SetBool(Walk, false);
-            anim.SetBool(Idle, false);
-            anim.SetBool(Run, false);
-            anim.SetBool(BadgerPawAttack, false);
-            anim.SetBool(BalloonFishDive, false);
-            anim.SetBool(BalloonFishFloat, false);
-            anim.SetBool(BalloonFishSwim, false);
-            anim.SetBool(Celebrates, false);
-            anim.SetBool(Jump, true);
-            anim.SetBool(FoxJump, false);
-            anim.SetBool(KoalaClimb, false);
-            anim.SetBool(KoalaClimbReachTop, false);
-            anim.SetBool(KoalaJumpToClimb, false);
-            anim.SetBool(Collect, false);
-            anim.SetBool(FallSitted, false);
-        }
-        else
-        {
-            anim.SetBool(Walk, false);
-            anim.SetBool(Idle, true);
-            anim.SetBool(Run, false);
-            anim.SetBool(BadgerPawAttack, false);
-            anim.SetBool(BalloonFishDive, false);
-            anim.SetBool(BalloonFishFloat, false);
-            anim.SetBool(BalloonFishSwim, false);
-            anim.SetBool(Celebrates, false);
-            anim.SetBool(Jump, false);
-            anim.SetBool(FoxJump, false);
-            anim.SetBool(KoalaClimb, false);
-            anim.SetBool(KoalaClimbReachTop, false);
-            anim.SetBool(KoalaJumpToClimb, false);
-            anim.SetBool(Collect, false);
-            anim.SetBool(FallSitted, false);
-        }
-
-        if (player.verticalInput == 0 && player.horizontalInput == 0) 
+        
+		if (player.isFinish)
 		{
+			//Debug.Log("finish");
             anim.SetBool(Walk, false);
             anim.SetBool(Idle, true);
             anim.SetBool(Run, false);
@@ -90,7 +55,7 @@ public class WovenKidExample : MonoBehaviour {
             anim.SetBool(BalloonFishDive, false);
             anim.SetBool(BalloonFishFloat, false);
             anim.SetBool(BalloonFishSwim, false);
-            anim.SetBool(Celebrates, false);
+            anim.SetBool(Celebrates, true);
             anim.SetBool(Jump, false);
             anim.SetBool(FoxJump, false);
             anim.SetBool(KoalaClimb, false);
@@ -98,24 +63,82 @@ public class WovenKidExample : MonoBehaviour {
             anim.SetBool(KoalaJumpToClimb, false);
             anim.SetBool(Collect, false);
             anim.SetBool(FallSitted, false);
-		}
+        }
 		else
 		{
-            anim.SetBool(Walk, true);
-            anim.SetBool(Idle, false);
-            anim.SetBool(Run, false);
-            anim.SetBool(BadgerPawAttack, false);
-            anim.SetBool(BalloonFishDive, false);
-            anim.SetBool(BalloonFishFloat, false);
-            anim.SetBool(BalloonFishSwim, false);
-            anim.SetBool(Celebrates, false);
-            anim.SetBool(Jump, false);
-            anim.SetBool(FoxJump, false);
-            anim.SetBool(KoalaClimb, false);
-            anim.SetBool(KoalaClimbReachTop, false);
-            anim.SetBool(KoalaJumpToClimb, false);
-            anim.SetBool(Collect, false);
-            anim.SetBool(FallSitted, false);
+            if (player.isJumping)
+            {
+                anim.SetBool(Walk, false);
+                anim.SetBool(Idle, false);
+                anim.SetBool(Run, false);
+                anim.SetBool(BadgerPawAttack, false);
+                anim.SetBool(BalloonFishDive, false);
+                anim.SetBool(BalloonFishFloat, false);
+                anim.SetBool(BalloonFishSwim, false);
+                anim.SetBool(Celebrates, false);
+                anim.SetBool(Jump, true);
+                anim.SetBool(FoxJump, false);
+                anim.SetBool(KoalaClimb, false);
+                anim.SetBool(KoalaClimbReachTop, false);
+                anim.SetBool(KoalaJumpToClimb, false);
+                anim.SetBool(Collect, false);
+                anim.SetBool(FallSitted, false);
+            }
+            else
+            {
+                anim.SetBool(Walk, false);
+                anim.SetBool(Idle, true);
+                anim.SetBool(Run, false);
+                anim.SetBool(BadgerPawAttack, false);
+                anim.SetBool(BalloonFishDive, false);
+                anim.SetBool(BalloonFishFloat, false);
+                anim.SetBool(BalloonFishSwim, false);
+                anim.SetBool(Celebrates, false);
+                anim.SetBool(Jump, false);
+                anim.SetBool(FoxJump, false);
+                anim.SetBool(KoalaClimb, false);
+                anim.SetBool(KoalaClimbReachTop, false);
+                anim.SetBool(KoalaJumpToClimb, false);
+                anim.SetBool(Collect, false);
+                anim.SetBool(FallSitted, false);
+            }
+
+            if (player.verticalInput == 0 && player.horizontalInput == 0)
+            {
+                anim.SetBool(Walk, false);
+                anim.SetBool(Idle, true);
+                anim.SetBool(Run, false);
+                anim.SetBool(BadgerPawAttack, false);
+                anim.SetBool(BalloonFishDive, false);
+                anim.SetBool(BalloonFishFloat, false);
+                anim.SetBool(BalloonFishSwim, false);
+                anim.SetBool(Celebrates, false);
+                anim.SetBool(Jump, false);
+                anim.SetBool(FoxJump, false);
+                anim.SetBool(KoalaClimb, false);
+                anim.SetBool(KoalaClimbReachTop, false);
+                anim.SetBool(KoalaJumpToClimb, false);
+                anim.SetBool(Collect, false);
+                anim.SetBool(FallSitted, false);
+            }
+            else
+            {
+                anim.SetBool(Walk, true);
+                anim.SetBool(Idle, false);
+                anim.SetBool(Run, false);
+                anim.SetBool(BadgerPawAttack, false);
+                anim.SetBool(BalloonFishDive, false);
+                anim.SetBool(BalloonFishFloat, false);
+                anim.SetBool(BalloonFishSwim, false);
+                anim.SetBool(Celebrates, false);
+                anim.SetBool(Jump, false);
+                anim.SetBool(FoxJump, false);
+                anim.SetBool(KoalaClimb, false);
+                anim.SetBool(KoalaClimbReachTop, false);
+                anim.SetBool(KoalaJumpToClimb, false);
+                anim.SetBool(Collect, false);
+                anim.SetBool(FallSitted, false);
+            }
         }
 
   //      if    (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D)) {
