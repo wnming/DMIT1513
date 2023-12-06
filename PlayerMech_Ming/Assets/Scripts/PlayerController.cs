@@ -103,8 +103,7 @@ public class PlayerController : MonoBehaviour
         LeftArm.transform.Rotate(Vector3.left, horizontalInput * rotationSpeed * Time.deltaTime);
         RightArm.transform.Rotate(Vector3.left, horizontalInput * rotationSpeed * Time.deltaTime);
 
-        //Get the current weapon angles
-        ShoulderAngles = LeftArm.transform.eulerAngles;
+        ShoulderAngles = LeftArm.transform.localEulerAngles;
 
         //Check the angles to see if they need to be clamped
         if (ShoulderAngles.x > 45.0f && ShoulderAngles.x < 180.0f)
@@ -125,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
         Torso.transform.Rotate(Vector3.up, verticalInput * rotationSpeed * Time.deltaTime);
 
-        angles = Torso.transform.eulerAngles;
+        angles = Torso.transform.localEulerAngles;
 
         if (angles.y < 270.0f && angles.y > 90.0f)
         {

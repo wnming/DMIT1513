@@ -7,37 +7,22 @@ public class CameraController : MonoBehaviour
     [SerializeField] Camera firstPersonCamera;
     [SerializeField] Camera thirdPersonCamera;
 
-    float initialZ;
-    float topDownZ;
-
     private void Start()
     {
-        Debug.Log(firstPersonCamera.transform.localPosition.z);
-        initialZ = firstPersonCamera.transform.localPosition.z;
-        topDownZ = firstPersonCamera.transform.localPosition.z - 0.87f;
         ShowThirdPersonView();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            if (Input.GetKeyDown(KeyCode.T))
+            if (thirdPersonCamera.enabled)
             {
-                firstPersonCamera.transform.localPosition = new Vector3(firstPersonCamera.transform.localPosition.x, firstPersonCamera.transform.localPosition.y, topDownZ);
                 ShowFirstPersonView();
             }
             else
             {
-                if (thirdPersonCamera.enabled)
-                {
-                    firstPersonCamera.transform.localPosition = new Vector3(firstPersonCamera.transform.localPosition.x, firstPersonCamera.transform.localPosition.y, initialZ);
-                    ShowFirstPersonView();
-                }
-                else
-                {
-                    ShowThirdPersonView();
-                }
+                ShowThirdPersonView();
             }
         }
     }
