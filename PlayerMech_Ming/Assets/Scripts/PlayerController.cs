@@ -103,13 +103,13 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Weapon" && Vector3.Distance(transform.position, other.gameObject.transform.position) < 2.5f)
         {
-            isShowText = true;
             //SelectWeaponSlotText.SetActive(true);
             WeaponController weapon = other.gameObject.GetComponentInParent<WeaponController>();
             if (weapon != null)
             {
-                if (weapon.isOnTheGround)
+                if (weapon.isOnTheGround && !weapon.isWeaponActive)
                 {
+                    isShowText = true;
                     weapon.AttachWeapon();
                 }
             }
@@ -121,7 +121,6 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Weapon")
         {
             isShowText = false;
-            //SelectWeaponSlotText.SetActive(false);
         }
     }
 

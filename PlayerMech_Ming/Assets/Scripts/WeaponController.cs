@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,17 +27,23 @@ public class WeaponController : MonoBehaviour
     private float projectileSpeed;
     [SerializeField] ProjectTileBullet projectilePrefab;
     [SerializeField] GameObject laserPrefab;
+    [SerializeField] GameObject bulletPrefab;
 
     [SerializeField] GameObject fireParticle;
 
     [SerializeField] GameObject endBarrel;
-    
+
+    [SerializeField] AudioSource fireSound;
+
+    private int initialAmmo;
+
     private void Start()
     {
         currentSlot = -1;
         isOnTheGround = true;
         projectileSpeed = 10.0f;
         isWeaponActive = false;
+        initialAmmo = ammo;
     }
 
     //0 = leftArm
@@ -46,15 +53,12 @@ public class WeaponController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isWeaponActive)
+        if (Input.GetKeyDown(KeyCode.Space) && isWeaponActive && !isOnTheGround)
         {
-            if(weaponName == "Orange")
+            fireSound.Play();
+            ammo -= 1;
+            if (weaponName == "Orange")
             {
-                Debug.Log("proj");
-                //projectile
-                //Instantiate(fireParticle, weapon.transform.position, leftArm.transform.rotation);
-                //var projectile = Instantiate(projectilePrefab, weapon.transform.position, leftArm.transform.rotation);
-                //projectile.Fire(projectileSpeed);
                 Instantiate(fireParticle, endBarrel.transform.position, endBarrel.transform.rotation);
                 var projectile = Instantiate(projectilePrefab, endBarrel.transform.position, leftArm.transform.rotation);
                 projectile.Fire(projectileSpeed);
@@ -64,12 +68,14 @@ public class WeaponController : MonoBehaviour
                 //laser
                 Instantiate(fireParticle, endBarrel.transform.position, endBarrel.transform.rotation);
                 var laser = Instantiate(laserPrefab, endBarrel.transform.position, endBarrel.transform.rotation);
-                laser.GetComponent<Rigidbody>().velocity = laser.transform.TransformDirection(Vector3.right * 15.0f); ;
-
+                laser.GetComponent<Rigidbody>().velocity = laser.transform.TransformDirection(Vector3.right * 15.0f);
             }
             if (weaponName == "Grey")
             {
-                //
+                //bullet
+                Instantiate(fireParticle, endBarrel.transform.position, endBarrel.transform.rotation);
+                var bullet = Instantiate(bulletPrefab, endBarrel.transform.position, endBarrel.transform.rotation);
+                bullet.GetComponent<Rigidbody>().velocity = bullet.transform.TransformDirection(Vector3.right * 8.0f);
             }
         }
         if (!isOnTheGround)
@@ -124,6 +130,7 @@ public class WeaponController : MonoBehaviour
         isWeaponActive = false;
         weapon.transform.parent = null;
         currentSlot = -1;
+        ammo = initialAmmo;
     }
 
     public void AttachWeapon()

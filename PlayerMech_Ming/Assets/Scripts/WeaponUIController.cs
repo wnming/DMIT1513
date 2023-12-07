@@ -30,24 +30,33 @@ public class WeaponUIController : MonoBehaviour
 
     void Update()
     {
-        var keyboard = Keyboard.current;
-        if (keyboard != null)
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            if (keyboard.rKey.wasPressedThisFrame)
+            if(weaponSlotList.Count(x => x.isUsing && x.isActive == true) > 0)
             {
-                if(weaponSlotList.Count(x => x.isUsing && x.isActive == true) > 0)
-                {
-                    int activeSlot = GetActiveSlot();
-                    int releaseWeaponIndex = weaponList.FindIndex(x => x.currentSlot == activeSlot);
-                    weaponList[releaseWeaponIndex].ReleaseWeapon();
-                    weaponSlotList[activeSlot].isActive = false;
-                    weaponSlotList[activeSlot].isUsing = false;
-                }
+                int activeSlot = GetActiveSlot();
+                int releaseWeaponIndex = weaponList.FindIndex(x => x.currentSlot == activeSlot);
+                weaponList[releaseWeaponIndex].ReleaseWeapon();
+                weaponSlotList[activeSlot].isActive = false;
+                weaponSlotList[activeSlot].isUsing = false;
             }
         }
         if (!player.isShowText)
         {
             HideSelectSlot();
+        }
+        UpdateAmmo();
+    }
+
+    private void UpdateAmmo()
+    {
+        for(int index = 0; index < weaponSlotList.Count; index++)
+        {
+            int weaponIndex = weaponList.FindIndex(x => x.currentSlot == weaponSlotList[index].slotNumber);
+            if(weaponIndex != -1)
+            {
+                weaponSlotList[index].ammo.text = weaponList[weaponIndex].ammo.ToString();
+            }
         }
     }
 
@@ -61,7 +70,10 @@ public class WeaponUIController : MonoBehaviour
         InActivateAllSlot();
         weaponSlotList[slotNumber].isActive = true;
         int weaponIndex = weaponList.FindIndex(x => x.currentSlot == slotNumber);
-        weaponList[weaponList.FindIndex(x => x.currentSlot == lastActiveSlot)].isWeaponActive = false;
+        if(weaponList.FindIndex(x => x.currentSlot == lastActiveSlot) > -1)
+        {
+            weaponList[weaponList.FindIndex(x => x.currentSlot == lastActiveSlot)].isWeaponActive = false;
+        }
         weaponList[weaponIndex].isWeaponActive = true;
         lastActiveSlot = slotNumber;
     }
@@ -79,7 +91,6 @@ public class WeaponUIController : MonoBehaviour
         }
         weapon.currentSlot = slotNumber;
         weapon.isOnTheGround = false;
-        weapon.isWeaponActive = true;
         weaponSlotList[slotNumber].isUsing = true;
         weaponSlotList[slotNumber].image.texture = weapon.weaponImage;
         weaponSlotList[slotNumber].ammo.text = weapon.ammo.ToString();
@@ -87,6 +98,7 @@ public class WeaponUIController : MonoBehaviour
         {
             lastActiveSlot = slotNumber;
             weaponSlotList[slotNumber].isActive = true;
+            weapon.isWeaponActive = true;
         }
     }
 
