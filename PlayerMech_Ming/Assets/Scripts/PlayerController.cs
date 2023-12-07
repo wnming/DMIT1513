@@ -23,15 +23,21 @@ public class PlayerController : MonoBehaviour
     Vector3 angles;
     Vector3 ShoulderAngles;
 
+    [SerializeField] GameObject SelectWeaponSlotText;
+
+    public bool isShowText;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         movingSound = GetComponent<AudioSource>();
-        moveSpeed = 25.0f;
+        moveSpeed = 30.0f;
         rotationSpeed = 50.0f;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
         pausePanel.SetActive(false);
         gameSceneManager = new GameObject("GameSceneManager").AddComponent<GameSceneManager>();
+        SelectWeaponSlotText.SetActive(false);
+        isShowText = false;
     }
 
     void Update()
@@ -60,10 +66,10 @@ public class PlayerController : MonoBehaviour
 
         if (pausePanel.activeSelf)
         {
-            Cursor.lockState = CursorLockMode.Confined;
+            //Cursor.lockState = CursorLockMode.Confined;
         }else
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.lockState = CursorLockMode.Locked;
         }
 
         var keyboard = Keyboard.current;
@@ -81,6 +87,41 @@ public class PlayerController : MonoBehaviour
                     ContinueGame();
                 }
             }
+        }
+
+        if (isShowText)
+        {
+            SelectWeaponSlotText.SetActive(true);
+        }
+        else
+        {
+            SelectWeaponSlotText.SetActive(false);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Weapon" && Vector3.Distance(transform.position, other.gameObject.transform.position) < 2.5f)
+        {
+            isShowText = true;
+            //SelectWeaponSlotText.SetActive(true);
+            WeaponController weapon = other.gameObject.GetComponentInParent<WeaponController>();
+            if (weapon != null)
+            {
+                if (weapon.isOnTheGround)
+                {
+                    weapon.AttachWeapon();
+                }
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Weapon")
+        {
+            isShowText = false;
+            //SelectWeaponSlotText.SetActive(false);
         }
     }
 
