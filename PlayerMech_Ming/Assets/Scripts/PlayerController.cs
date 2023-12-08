@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody rb;
-    AudioSource movingSound;
+    [SerializeField] AudioSource movingSound;
+    [SerializeField] AudioSource itemPickupSound;
 
     [SerializeField] GameObject Torso;
     [SerializeField] GameObject LeftArm;
@@ -14,6 +15,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] GameObject pausePanel;
     GameSceneManager gameSceneManager;
+
+    [SerializeField] WeaponController yellowWeapon;
 
     float moveSpeed;
     float rotationSpeed;
@@ -25,12 +28,13 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] GameObject SelectWeaponSlotText;
 
+    [SerializeField] GameObject failureText;
+
     public bool isShowText;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        movingSound = GetComponent<AudioSource>();
         moveSpeed = 30.0f;
         rotationSpeed = 50.0f;
         //Cursor.lockState = CursorLockMode.Locked;
@@ -38,6 +42,7 @@ public class PlayerController : MonoBehaviour
         gameSceneManager = new GameObject("GameSceneManager").AddComponent<GameSceneManager>();
         SelectWeaponSlotText.SetActive(false);
         isShowText = false;
+        failureText.SetActive(false);
     }
 
     void Update()
@@ -99,6 +104,40 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "BroomStick")
+        {
+            HealthScript health = this.GetComponent<HealthScript>();
+            health.ApplyDamage(10);
+            if(health.currentHealth <= 0)
+            {
+                if (movingSound.isPlaying)
+                {
+                    movingSound.Stop();
+                }
+                StartCoroutine(CoundownToClose());
+            }
+        }
+    }
+
+    IEnumerator CoundownToClose()
+    {
+        Time.timeScale = 0;
+        failureText.SetActive(true);
+        yield return StartCoroutine(WaitForRealSeconds(3));
+        Application.Quit();
+    }
+
+    IEnumerator WaitForRealSeconds(float seconds)
+    {
+        float startTime = Time.realtimeSinceStartup;
+        while (Time.realtimeSinceStartup - startTime < seconds)
+        {
+            yield return null;
+        }
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Weapon" && Vector3.Distance(transform.position, other.gameObject.transform.position) < 2.5f)
@@ -113,6 +152,13 @@ public class PlayerController : MonoBehaviour
                     weapon.AttachWeapon();
                 }
             }
+        }
+        //yellow
+        if (other.gameObject.tag == "Ammo" && yellowWeapon.currentSlot != -1 && Vector3.Distance(transform.position, other.gameObject.transform.position) < 2.5f)
+        {
+            itemPickupSound.Play();
+            other.gameObject.SetActive(false);
+            yellowWeapon.ammo += 5;
         }
     }
 

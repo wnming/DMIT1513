@@ -35,6 +35,8 @@ public class WeaponController : MonoBehaviour
 
     [SerializeField] AudioSource fireSound;
 
+    [SerializeField] PlayerController player;
+
     private int initialAmmo;
 
     private void Start()
@@ -53,7 +55,18 @@ public class WeaponController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isWeaponActive && !isOnTheGround)
+        if(ammo <= 0)
+        {
+            ammo = 0;
+        }
+        if (Input.GetKeyDown(KeyCode.L) && isWeaponActive && !isOnTheGround && ammo <= 0)
+        {
+            if (weaponName == "Orange" || weaponName == "Grey")
+            {
+                ammo = initialAmmo;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && isWeaponActive && !isOnTheGround && ammo > 0)
         {
             fireSound.Play();
             ammo -= 1;

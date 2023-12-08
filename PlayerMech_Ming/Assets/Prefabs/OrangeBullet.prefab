@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7551906938200697705}
   - component: {fileID: 4105183524407778108}
   - component: {fileID: 2620712426274614791}
+  - component: {fileID: 8936875425213212976}
   m_Layer: 0
   m_Name: OrangeBullet
   m_TagString: Untagged
@@ -97,7 +98,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4105183524407778108
 MonoBehaviour:
@@ -128,3 +129,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8936875425213212976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2243633457656984147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7ec4b9de58b26d43884fa548446f977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletName: Orange
+  paticleExplode: {fileID: 1121192042590650, guid: e1b08032bec16ba4eb1ae23cbd572664, type: 3}
+  explodeSound: {fileID: 0}
+  damage: 0
