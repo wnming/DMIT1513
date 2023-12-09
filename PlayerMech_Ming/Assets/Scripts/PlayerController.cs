@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] GameObject[] enemyList;
+
     Rigidbody rb;
     [SerializeField] AudioSource movingSound;
     [SerializeField] AudioSource itemPickupSound;
+    [SerializeField] AudioSource shotByEnemy;
 
     [SerializeField] GameObject Torso;
     [SerializeField] GameObject LeftArm;
@@ -28,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] GameObject SelectWeaponSlotText;
 
-    [SerializeField] GameObject failureText;
+    [SerializeField] TextMeshProUGUI endGameText;
 
     public bool isShowText;
 
@@ -42,89 +47,114 @@ public class PlayerController : MonoBehaviour
         gameSceneManager = new GameObject("GameSceneManager").AddComponent<GameSceneManager>();
         SelectWeaponSlotText.SetActive(false);
         isShowText = false;
-        failureText.SetActive(false);
+        endGameText.text = "";
     }
 
     void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        if (verticalInput != 0 && !movingSound.isPlaying)
+        if(enemyList.Where(x => x.activeSelf).Count() <= 0)
         {
-            movingSound.Play();
+            endGameText.text = "You Win!!!";
+            StartCoroutine(CoundownToClose());
         }
         else
         {
-            if(verticalInput == 0)
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+
+            if (verticalInput != 0 && !movingSound.isPlaying)
             {
-                movingSound.Stop();
-            }
-        }
-
-        rb.AddRelativeForce(Vector3.forward * verticalInput * moveSpeed);
-
-        transform.Rotate(Vector3.up, horizontalInput * rotationSpeed * Time.deltaTime);
-
-        TorsoRotation();
-        ArmRotation();
-
-        if (pausePanel.activeSelf)
-        {
-            //Cursor.lockState = CursorLockMode.Confined;
-        }else
-        {
-            //Cursor.lockState = CursorLockMode.Locked;
-        }
-
-        var keyboard = Keyboard.current;
-        if (keyboard != null)
-        {
-            if (keyboard.escapeKey.wasPressedThisFrame && !pausePanel.activeSelf)
-            {
-                pausePanel.SetActive(true);
-                Time.timeScale = 0;
+                movingSound.Play();
             }
             else
             {
-                if (keyboard.escapeKey.wasPressedThisFrame && pausePanel.activeSelf)
-                {
-                    ContinueGame();
-                }
-            }
-        }
-
-        if (isShowText)
-        {
-            SelectWeaponSlotText.SetActive(true);
-        }
-        else
-        {
-            SelectWeaponSlotText.SetActive(false);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "BroomStick")
-        {
-            HealthScript health = this.GetComponent<HealthScript>();
-            health.ApplyDamage(10);
-            if(health.currentHealth <= 0)
-            {
-                if (movingSound.isPlaying)
+                if (verticalInput == 0)
                 {
                     movingSound.Stop();
                 }
+            }
+
+            rb.AddRelativeForce(Vector3.forward * verticalInput * moveSpeed);
+
+            transform.Rotate(Vector3.up, horizontalInput * rotationSpeed * Time.deltaTime);
+
+            TorsoRotation();
+            ArmRotation();
+
+            var keyboard = Keyboard.current;
+            if (keyboard != null)
+            {
+                if (keyboard.escapeKey.wasPressedThisFrame && !pausePanel.activeSelf)
+                {
+                    pausePanel.SetActive(true);
+                    Time.timeScale = 0;
+                }
+                else
+                {
+                    if (keyboard.escapeKey.wasPressedThisFrame && pausePanel.activeSelf)
+                    {
+                        ContinueGame();
+                    }
+                }
+            }
+
+            if (isShowText)
+            {
+                SelectWeaponSlotText.SetActive(true);
+            }
+            else
+            {
+                SelectWeaponSlotText.SetActive(false);
+            }
+        }
+    }
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.tag == "BroomStick")
+    //    {
+    //        Debug.Log(other.gameObject.transform.localRotation.x);
+    //        if(other.gameObject.transform.localRotation.x == -7.5f)
+    //        {
+    //            HealthScript health = this.GetComponent<HealthScript>();
+    //            health.ApplyDamage(10);
+    //            if (health.currentHealth <= 0)
+    //            {
+    //                movingSound.Stop();
+    //                StartCoroutine(CoundownToClose());
+    //            }
+    //        }
+    //    }
+    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "EnemyBullet")
+        {
+            shotByEnemy.Play();
+            other.gameObject.SetActive(false);
+            HealthScript health = this.GetComponent<HealthScript>();
+            health.ApplyDamage(10);
+            if (health.currentHealth <= 0)
+            {
+                endGameText.text = "Game Over!";
+                movingSound.Stop();
                 StartCoroutine(CoundownToClose());
             }
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Weapon")
+        {
+            isShowText = false;
+        }
+    }
+
     IEnumerator CoundownToClose()
     {
+        movingSound.Stop();
         Time.timeScale = 0;
-        failureText.SetActive(true);
         yield return StartCoroutine(WaitForRealSeconds(3));
         Application.Quit();
     }
@@ -159,14 +189,6 @@ public class PlayerController : MonoBehaviour
             itemPickupSound.Play();
             other.gameObject.SetActive(false);
             yellowWeapon.ammo += 5;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Weapon")
-        {
-            isShowText = false;
         }
     }
 

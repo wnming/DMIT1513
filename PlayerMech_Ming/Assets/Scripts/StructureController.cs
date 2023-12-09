@@ -15,6 +15,7 @@ public class StructureController : MonoBehaviour
     public void Explode()
     {
         gameObject.SetActive(false);
+        explodeSound.Play();
         GameObject explodeObj = Instantiate(explodeStructure, transform.position, transform.rotation) as GameObject;
         Vector3 explosionPos = transform.position;
         Collider[] colliders = Physics.OverlapSphere(explosionPos, 5.0f);
@@ -28,6 +29,5 @@ public class StructureController : MonoBehaviour
             }
         }
         Destroy(explodeObj, 4);
-        explodeSound.Play();
     }
 }

@@ -9,6 +9,8 @@ TagManager:
   - Structure
   - BroomStick
   - Decoration
+  - Enemy
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX

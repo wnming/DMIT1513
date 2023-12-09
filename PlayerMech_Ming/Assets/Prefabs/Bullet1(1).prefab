@@ -77,6 +77,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7ec4b9de58b26d43884fa548446f977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletName: Grey
+  paticleExplode: {fileID: 1329845292236604, guid: 9bba9cf244c53c5439505dfc96fdd11c, type: 3}
+  damage: 10
 --- !u!1 &1000011260505556
 GameObject:
   m_ObjectHideFlags: 0
